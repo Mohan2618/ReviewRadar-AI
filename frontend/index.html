@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ReviewRadar AI</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0D1B3E;
+    --navy-mid: #1A2F5E;
+    --teal: #00C4A0;
+    --teal-dim: #009E82;
+    --gold: #F5C842;
+    --light-bg: #F4F6FB;
+    --card-bg: #FFFFFF;
+    --text-main: #0D1B3E;
+    --text-muted: #556080;
+    --text-hint: #8A97B8;
+    --border: rgba(13,27,62,0.1);
+    --radius: 14px;
+    --shadow: 0 4px 24px rgba(13,27,62,0.08);
+    --shadow-hover: 0 8px 32px rgba(13,27,62,0.14);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--light-bg);
+    color: var(--text-main);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ─────────────────────── */
+  header {
+    background: var(--navy);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-icon {
+    width: 34px;
+    height: 34px;
+    background: var(--teal);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo-icon svg { width: 18px; height: 18px; }
+
+  .logo-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    color: #fff;
+    letter-spacing: -0.3px;
+  }
+
+  .logo-text span { color: var(--teal); }
+
+  .header-badge {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--navy);
+    background: var(--gold);
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+
+  /* ── HERO ────────────────────────── */
+  .hero {
+    background: var(--navy);
+    padding: 3rem 2rem 5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 110%, rgba(0,196,160,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 1rem;
+  }
+
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    color: #fff;
+    line-height: 1.15;
+    max-width: 640px;
+    margin: 0 auto 1rem;
+    letter-spacing: -0.5px;
+  }
+
+  .hero p {
+    font-size: 16px;
+    color: rgba(255,255,255,0.55);
+    max-width: 480px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+  }
+
+  /* ── SEARCH BOX ──────────────────── */
+  .search-wrapper {
+    max-width: 680px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    background: rgba(255,255,255,0.06);
+    border: 1.5px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    padding: 6px 6px 6px 20px;
+    gap: 10px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .search-box:focus-within {
+    background: rgba(255,255,255,0.1);
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgba(0,196,160,0.15);
+  }
+
+  .search-box svg {
+    flex-shrink: 0;
+    color: rgba(255,255,255,0.35);
+    width: 18px; height: 18px;
+  }
+
+  .search-box input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: #fff;
+    caret-color: var(--teal);
+  }
+
+  .search-box input::placeholder { color: rgba(255,255,255,0.3); }
+
+  .top-k-select {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    color: rgba(255,255,255,0.6);
+    font-size: 12px;
+    font-family: 'DM Sans', sans-serif;
+    padding: 6px 10px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .top-k-select option { background: var(--navy); color: #fff; }
+
+  .btn-search {
+    background: var(--teal);
+    color: var(--navy);
+    border: none;
+    border-radius: 11px;
+    padding: 10px 22px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.18s, transform 0.1s;
+    white-space: nowrap;
+  }
+
+  .btn-search:hover { background: #00b591; }
+  .btn-search:active { transform: scale(0.97); }
+  .btn-search:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .suggestion-pills {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+
+  .pill {
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 5px 14px;
+    cursor: pointer;
+    transition: color 0.15s, background 0.15s;
+  }
+
+  .pill:hover {
+    color: var(--teal);
+    background: rgba(0,196,160,0.1);
+    border-color: rgba(0,196,160,0.3);
+  }
+
+  /* ── INGEST PANEL ───────────────── */
+  .main-content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+    transform: translateY(-40px);
+  }
+
+  .ingest-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .ingest-icon {
+    width: 44px;
+    height: 44px;
+    background: #EBF9F6;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .ingest-icon svg { width: 22px; height: 22px; color: var(--teal-dim); }
+
+  .ingest-info h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 2px;
+  }
+
+  .ingest-info p {
+    font-size: 12px;
+    color: var(--text-hint);
+  }
+
+  .ingest-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .file-label {
+    background: var(--light-bg);
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 13px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: border-color 0.15s;
+    white-space: nowrap;
+  }
+
+  .file-label:hover { border-color: var(--teal); color: var(--teal-dim); }
+  #csv-file { display: none; }
+
+  .btn-ingest {
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 9px 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s;
+    white-space: nowrap;
+  }
+
+  .btn-ingest:hover { background: var(--navy-mid); }
+  .btn-ingest:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .ingest-status {
+    width: 100%;
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    display: none;
+  }
+
+  .ingest-status.success { background: #EBF9F6; color: #0F6E56; display: block; }
+  .ingest-status.error { background: #FDECEA; color: #993C1D; display: block; }
+  .ingest-status.loading { background: #EEF2FF; color: #534AB7; display: block; }
+
+  /* ── STATS BAR ──────────────────── */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px;
+    margin-bottom: 1.5rem;
+    display: none;
+  }
+
+  .stat-card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--navy);
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--text-hint);
+    margin-top: 2px;
+  }
+
+  /* ── RESULTS ────────────────────── */
+  .results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    display: none;
+  }
+
+  .results-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-main);
+  }
+
+  .results-meta {
+    font-size: 12px;
+    color: var(--text-hint);
+  }
+
+  .results-grid { display: flex; flex-direction: column; gap: 12px; }
+
+  /* ── REVIEW CARD ────────────────── */
+  .review-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    padding: 1.25rem 1.5rem;
+    transition: box-shadow 0.2s, transform 0.15s;
+    animation: slideUp 0.3s ease both;
+  }
+
+  .review-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .rank-badge {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .rank-badge.top { background: var(--teal); color: var(--navy); }
+
+  .card-meta {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .meta-chip {
+    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+
+  .chip-product { background: #EEF2FF; color: #534AB7; }
+  .chip-category { background: #EBF9F6; color: #0F6E56; }
+  .chip-date { background: var(--light-bg); color: var(--text-hint); }
+
+  .score-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 20px;
+    flex-shrink: 0;
+  }
+
+  .score-high { background: #EBF9F6; color: #0F6E56; }
+  .score-mid { background: #FFF8E1; color: #7A5500; }
+  .score-low { background: #FFF0EE; color: #993C1D; }
+
+  .review-text {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-muted);
+    margin: 10px 0;
+  }
+
+  .card-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+
+  .reviewer-info { display: flex; align-items: center; gap: 8px; }
+
+  .avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--light-bg);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  .reviewer-name { font-size: 12px; color: var(--text-hint); }
+
+  .star-rating { display: flex; gap: 2px; }
+  .star { font-size: 13px; }
+  .star.filled { color: var(--gold); }
+  .star.empty { color: var(--border); }
+
+  .sim-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--text-hint);
+  }
+
+  .sim-bar {
+    width: 80px;
+    height: 4px;
+    background: var(--light-bg);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .sim-bar-fill {
+    height: 100%;
+    border-radius: 10px;
+    background: linear-gradient(90deg, var(--teal), #00e0ba);
+    transition: width 0.6s ease;
+  }
+
+  /* ── EMPTY / LOADING ────────────── */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-hint);
+  }
+
+  .empty-state svg {
+    width: 48px; height: 48px;
+    margin: 0 auto 1rem;
+    display: block;
+    opacity: 0.3;
+  }
+
+  .empty-state p { font-size: 14px; }
+
+  .loading-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    padding: 3rem;
+  }
+
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--teal);
+    animation: bounce 1.2s infinite;
+  }
+
+  .dot:nth-child(2) { animation-delay: 0.2s; }
+  .dot:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes bounce {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+    40% { transform: scale(1); opacity: 1; }
+  }
+
+  /* ── FILTER BAR ─────────────────── */
+  .filter-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    display: none;
+  }
+
+  .filter-chip {
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .filter-chip.active {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+  }
+
+  /* ── TOAST ──────────────────────── */
+  #toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--navy);
+    color: #fff;
+    font-size: 13px;
+    padding: 12px 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s;
+    z-index: 999;
+    max-width: 280px;
+  }
+
+  #toast.show { transform: translateY(0); opacity: 1; }
+  #toast.success { border-left: 3px solid var(--teal); }
+  #toast.error { border-left: 3px solid #E24B4A; }
+
+
+  .insights-panel {
+  margin-top: 20px;
+  padding: 20px;
+  background: #0f172a;
+  border-radius: 12px;
+  color: white;
+}
+
+.insights-grid {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.insight-card {
+  flex: 1;
+  min-width: 200px;
+  background: #1e293b;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.insight-title {
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+.insight-value {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+
+.btn-insights {
+  background: rgba(0,196,160,0.12);
+  color: var(--teal);
+  border: 1px solid rgba(0,196,160,0.4);
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-insights:hover {
+  background: rgba(0,196,160,0.2);
+  border-color: var(--teal);
+}
+
+.btn-insights:active {
+  transform: scale(0.96);
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        <path d="M11 8v6M8 11h6" stroke-width="2.5"/>
+      </svg>
+    </div>
+    <span class="logo-text">Review<span>Radar</span> AI</span>
+  </div>
+  <span class="header-badge">Semantic Search</span>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="hero-label">Customer Insight Discovery Engine</span>
+  <h1>Find Insights Hidden in Thousands of Reviews</h1>
+  <p>Ask in plain English. Get semantically matched reviews instantly — no keywords needed.</p>
+
+  <div class="search-wrapper">
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+
+      <select id="dataset-filter" class="top-k-select">
+  <option value="">All datasets</option>
+</select>
+
+      <input type="text" id="query-input" placeholder='Try: "customers upset about battery life"' />
+      <select class="top-k-select" id="top-k">
+        <option value="5">Top 5</option>
+        <option value="10" selected>Top 10</option>
+        <option value="20">Top 20</option>
+      </select>
+      <button class="btn-search" id="search-btn" onclick="doSearch()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+        Search
+      </button>
+    </div>
+
+    <button class="btn-insights" onclick="loadInsights()">
+  📊 Insights
+</button>
+
+    <div class="suggestion-pills">
+      <span class="pill" onclick="setQuery(this)">customers love the camera</span>
+      <span class="pill" onclick="setQuery(this)">overheating complaints</span>
+      <span class="pill" onclick="setQuery(this)">bad customer support</span>
+      <span class="pill" onclick="setQuery(this)">battery life issues</span>
+      <span class="pill" onclick="setQuery(this)">packaging damaged</span>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+  <div id="insights-panel" class="insights-panel" style="display:none;"></div>
+
+  <!-- INGEST CARD -->
+  <div class="ingest-card">
+    <div class="ingest-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+        <polyline points="10 9 9 9 8 9"/>
+      </svg>
+    </div>
+    <div class="ingest-info">
+      <h3>Index Your CSV Reviews</h3>
+      <p>Upload a CSV with a <code>review_text</code> column. Optional: product_name, rating, date, category</p>
+    </div>
+    <div class="ingest-actions">
+      <input type="file" id="csv-file" accept=".csv"/>
+      <label class="file-label" for="csv-file" id="file-label-text">Choose CSV file</label>
+      <button class="btn-ingest" id="ingest-btn" onclick="doIngest()">Index Reviews</button>
+    </div>
+    <div class="ingest-status" id="ingest-status"></div>
+  </div>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar" id="stats-bar">
+    <div class="stat-card">
+      <div class="stat-value" id="stat-results">0</div>
+      <div class="stat-label">Results Found</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="stat-top-score">—</div>
+      <div class="stat-label">Top Similarity</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="stat-avg-score">—</div>
+      <div class="stat-label">Avg Similarity</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="stat-avg-rating">—</div>
+      <div class="stat-label">Avg Rating</div>
+    </div>
+  </div>
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar" id="filter-bar">
+    <span class="filter-chip active" onclick="filterResults('all', this)">All</span>
+  </div>
+
+  <!-- RESULTS HEADER -->
+  <div class="results-header" id="results-header">
+    <span class="results-title" id="results-title">Results</span>
+    <span class="results-meta" id="results-meta"></span>
+  </div>
+
+  <!-- RESULTS CONTAINER -->
+  <div id="results-container">
+    <div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <p>Enter a query above to discover relevant customer reviews</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+  let allResults = [];
+
+  // File picker label
+  document.getElementById('csv-file').addEventListener('change', function() {
+    const name = this.files[0]?.name || 'Choose CSV file';
+    document.getElementById('file-label-text').textContent = name;
+  });
+
+  function setQuery(el) {
+    document.getElementById('query-input').value = el.textContent.trim();
+    document.getElementById('query-input').focus();
+  }
+
+  document.getElementById('query-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') doSearch();
+  });
+
+  async function doSearch() {
+    const query = document.getElementById('query-input').value.trim();
+    if (!query) { showToast('Please enter a search query', 'error'); return; }
+
+    const topK = parseInt(document.getElementById('top-k').value);
+    const btn = document.getElementById('search-btn');
+    btn.disabled = true;
+    btn.textContent = 'Searching...';
+
+    showLoading();
+
+    try {
+      const dataset = document.getElementById('dataset-filter').value;
+
+const res = await fetch('/api/search', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    query,
+    top_k: topK,
+    dataset: dataset || null
+  })
+});
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.detail || 'Search failed');
+      }
+
+      const data = await res.json();
+      allResults = data.results;
+      renderResults(data.results, query);
+    } catch (err) {
+      showToast(err.message, 'error');
+      showError(err.message);
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg> Search`;
+    }
+  }
+
+
+  async function loadInsights() {
+  const query = document.getElementById('query-input').value.trim();
+  const dataset = document.getElementById('dataset-filter').value || null;
+
+  if (!query) {
+    showToast("Enter a query first", "error");
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/insights', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query, top_k: 50, dataset })
+    });
+
+    const data = await res.json();
+
+    renderInsights(data);
+
+  } catch (err) {
+    showToast("Insights failed", "error");
+  }
+}
+
+
+function renderInsights(data) {
+  const panel = document.getElementById('insights-panel');
+  panel.style.display = 'block';
+
+  const s = data.sentiment.percent;
+
+  panel.innerHTML = `
+    <div class="insights-grid">
+      
+      <div class="insight-card">
+        <div class="insight-title">Positive</div>
+        <div class="insight-value">${s.positive || 0}%</div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-title">Neutral</div>
+        <div class="insight-value">${s.neutral || 0}%</div>
+      </div>
+
+      <div class="insight-card">
+        <div class="insight-title">Negative</div>
+        <div class="insight-value">${s.negative || 0}%</div>
+      </div>
+
+    </div>
+
+    <div style="margin-top:15px;">
+      <b>Top Issues:</b> ${data.top_negative_keywords.join(", ")}
+    </div>
+
+    <div style="margin-top:10px;">
+      <b>Top Praise:</b> ${data.top_positive_keywords.join(", ")}
+    </div>
+  `;
+}
+
+
+  async function loadDatasets() {
+  const res = await fetch('/api/datasets');
+  const data = await res.json();
+
+  const select = document.getElementById('dataset-filter');
+
+  // 🔥 CLEAR FIRST (important)
+  select.innerHTML = '<option value="">All datasets</option>';
+
+  data.datasets.forEach(d => {
+    const opt = document.createElement('option');
+    opt.value = d;
+    opt.textContent = d;
+    select.appendChild(opt);
+  });
+}
+
+window.onload = loadDatasets;
+
+  async function doIngest() {
+    const file = document.getElementById('csv-file').files[0];
+    if (!file) { showToast('Please select a CSV file first', 'error'); return; }
+
+    const btn = document.getElementById('ingest-btn');
+    const status = document.getElementById('ingest-status');
+    btn.disabled = true;
+    btn.textContent = 'Indexing...';
+
+    status.className = 'ingest-status loading';
+    status.textContent = '⏳ Embedding reviews and indexing into ChromaDB... This may take a minute.';
+
+    const form = new FormData();
+    form.append('file', file);
+
+    try {
+      const res = await fetch('/api/ingest', { method: 'POST', body: form });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.detail || 'Ingestion failed');
+      }
+      const data = await res.json();
+      status.className = 'ingest-status success';
+      status.textContent = `✅ ${data.message}`;
+      showToast(data.message, 'success');
+      await loadDatasets();  // refresh dropdown
+    } catch (err) {
+      status.className = 'ingest-status error';
+      status.textContent = `❌ ${err.message}`;
+      showToast(err.message, 'error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Index Reviews';
+    }
+  }
+
+  function renderResults(results, query) {
+    const container = document.getElementById('results-container');
+    const header = document.getElementById('results-header');
+    const statsBar = document.getElementById('stats-bar');
+    const filterBar = document.getElementById('filter-bar');
+
+    if (!results || results.length === 0) {
+      container.innerHTML = `<div class="empty-state">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <p>No results found for "<strong>${escHtml(query)}</strong>". Try a different query.</p>
+      </div>`;
+      header.style.display = 'none';
+      statsBar.style.display = 'none';
+      filterBar.style.display = 'none';
+      return;
+    }
+
+    // Stats
+    const scores = results.map(r => r.similarity_score);
+    const ratings = results.map(r => parseFloat(r.rating)).filter(r => !isNaN(r));
+    document.getElementById('stat-results').textContent = results.length;
+    document.getElementById('stat-top-score').textContent = (Math.max(...scores) * 100).toFixed(0) + '%';
+    document.getElementById('stat-avg-score').textContent = (scores.reduce((a,b)=>a+b,0)/scores.length*100).toFixed(0) + '%';
+    document.getElementById('stat-avg-rating').textContent = ratings.length ? (ratings.reduce((a,b)=>a+b,0)/ratings.length).toFixed(1) : '—';
+
+    statsBar.style.display = 'grid';
+
+    // Filters
+    const categories = [...new Set(results.map(r => r.category).filter(c => c && c !== 'N/A'))];
+    filterBar.innerHTML = `<span class="filter-chip active" onclick="filterResults('all',this)">All</span>` +
+      categories.map(c => `<span class="filter-chip" onclick="filterResults('${escHtml(c)}',this)">${escHtml(c)}</span>`).join('');
+    filterBar.style.display = categories.length > 0 ? 'flex' : 'none';
+
+    // Header
+    header.style.display = 'flex';
+    document.getElementById('results-title').textContent = `${results.length} Results`;
+    document.getElementById('results-meta').textContent = `Query: "${query}"`;
+
+    // Cards
+    container.innerHTML = `<div class="results-grid">${results.map((r, i) => buildCard(r, i)).join('')}</div>`;
+
+    // Animate sim bars
+    setTimeout(() => {
+      document.querySelectorAll('.sim-bar-fill').forEach(el => {
+        el.style.width = el.dataset.width;
+      });
+    }, 50);
+  }
+
+  function buildCard(r, i) {
+    const score = r.similarity_score;
+    const scorePct = (score * 100).toFixed(1);
+    const scoreClass = score >= 0.7 ? 'score-high' : score >= 0.5 ? 'score-mid' : 'score-low';
+    const rankClass = i === 0 ? 'rank-badge top' : 'rank-badge';
+    const rating = parseFloat(r.rating);
+    const stars = !isNaN(rating) ? buildStars(rating) : '';
+    const initials = r.reviewer_name && r.reviewer_name !== 'N/A'
+      ? r.reviewer_name.split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase()
+      : '?';
+
+    return `<div class="review-card" style="animation-delay:${i*0.04}s">
+      <div class="card-top">
+        <div class="${rankClass}">${i+1}</div>
+        <div class="card-meta">
+          ${r.product_name && r.product_name!=='N/A' ? `<span class="meta-chip chip-product">${escHtml(r.product_name)}</span>` : ''}
+          ${r.category && r.category!=='N/A' ? `<span class="meta-chip chip-category">${escHtml(r.category)}</span>` : ''}
+          ${r.date && r.date!=='N/A' ? `<span class="meta-chip chip-date">${escHtml(r.date)}</span>` : ''}
+        </div>
+        <span class="score-badge ${scoreClass}">${scorePct}% match</span>
+      </div>
+      <p class="review-text">${escHtml(r.review_text)}</p>
+      <div class="card-bottom">
+        <div class="reviewer-info">
+          <div class="avatar">${initials}</div>
+          <span class="reviewer-name">${r.reviewer_name && r.reviewer_name!=='N/A' ? escHtml(r.reviewer_name) : 'Anonymous'}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          ${stars}
+          <div class="sim-bar-wrap">
+            Similarity
+            <div class="sim-bar"><div class="sim-bar-fill" style="width:0%" data-width="${scorePct}%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function buildStars(rating) {
+    const full = Math.round(rating);
+    return `<div class="star-rating">` +
+      Array.from({length:5},(_,i) =>
+        `<span class="star ${i<full?'filled':'empty'}">${i<full?'★':'☆'}</span>`
+      ).join('') + `</div>`;
+  }
+
+  function filterResults(category, el) {
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    const filtered = category === 'all' ? allResults : allResults.filter(r => r.category === category);
+    document.getElementById('results-container').innerHTML =
+      `<div class="results-grid">${filtered.map((r,i) => buildCard(r,i)).join('')}</div>`;
+    setTimeout(() => {
+      document.querySelectorAll('.sim-bar-fill').forEach(el => { el.style.width = el.dataset.width; });
+    }, 50);
+    document.getElementById('stat-results').textContent = filtered.length;
+  }
+
+  function showLoading() {
+    document.getElementById('results-container').innerHTML =
+      `<div class="loading-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
+    document.getElementById('results-header').style.display = 'none';
+    document.getElementById('stats-bar').style.display = 'none';
+    document.getElementById('filter-bar').style.display = 'none';
+  }
+
+  function showError(msg) {
+    document.getElementById('results-container').innerHTML =
+      `<div class="empty-state"><p>❌ ${escHtml(msg)}<br><small>Make sure you've indexed reviews first via the panel above, and the server is running.</small></p></div>`;
+  }
+
+  function escHtml(str) {
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function showToast(msg, type='success') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = `show ${type}`;
+    setTimeout(() => { t.className = ''; }, 3500);
+  }
+</script>
+</body>
+</html>
