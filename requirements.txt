@@ -10,3 +10,4 @@ torch==2.1.2+cpu
 pandas==2.2.1
 python-multipart==0.0.9
 pydantic==2.6.4
+numpy<2.0
