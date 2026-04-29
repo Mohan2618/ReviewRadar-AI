@@ -3,7 +3,7 @@ import chromadb
 from sentence_transformers import SentenceTransformer
 from .config import CHROMA_DB_PATH, COLLECTION_NAME, EMBEDDING_MODEL, SAMPLE_CSV_PATH
 import uuid
-
+import time
 
 print("🔄 Loading embedding model...")
 model = SentenceTransformer(EMBEDDING_MODEL)
@@ -24,7 +24,8 @@ def ingest_reviews(csv_path: str = None, dataset_name: str = None):
 
 
     df = pd.read_csv(path)
-
+    if df.empty:
+    raise ValueError("CSV is empty or invalid.")
   
     df.columns = [c.strip().lower().replace(" ", "_") for c in df.columns]
 
@@ -39,15 +40,20 @@ def ingest_reviews(csv_path: str = None, dataset_name: str = None):
     print(f"✅ Loaded {len(df)} valid reviews")
 
    
-    if len(df) > 5000:
-        raise ValueError("CSV too large. Limit to 5000 rows.")
+    MAX_ROWS = 2000
+
+    if len(df) > MAX_ROWS:
+        print(f"⚠️ Trimming dataset from {len(df)} to {MAX_ROWS} rows")
+        df = df.head(MAX_ROWS)
 
     # Generate embeddings
     texts = df["review_text"].tolist()
     print("🔢 Generating embeddings...")
 
     try:
-        embeddings = model.encode(texts, show_progress_bar=False, batch_size=50)
+        start = time.time()
+        embeddings = model.encode(texts, show_progress_bar=False, batch_size=32)
+        print(f"⏱ Embedding time: {round(time.time()-start,2)} sec")
     except Exception as e:
         print("❌ Embedding error:", str(e))
         raise
