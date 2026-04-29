@@ -952,11 +952,20 @@ window.onload = loadDatasets;
     form.append('file', file);
 
     try {
-      const res = await fetch('/api/ingest', { method: 'POST', body: form });
+      const controller = new AbortController();
+const timeout = setTimeout(() => controller.abort(), 30000); // 30s
+
+const res = await fetch('/api/ingest', {
+  method: 'POST',
+  body: form,
+  signal: controller.signal
+});
+
+clearTimeout(timeout);
       if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.detail || 'Ingestion failed');
-      }
+  const text = await res.text();   // 🔥 FIX
+  throw new Error(text || 'Ingestion failed');
+}
       const data = await res.json();
       status.className = 'ingest-status success';
       status.textContent = `✅ ${data.message}`;
