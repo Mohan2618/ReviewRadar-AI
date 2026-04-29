@@ -75,7 +75,7 @@ cd ReviewRadar-AI
 2. Create Virtual Environment
 py -3.10 -m venv venv
 
-Activate:
+4. Activate:
 .\venv\Scripts\activate
 
 3. Install Dependencies
