@@ -42,6 +42,12 @@ def ingest_reviews(csv_path: str = None, dataset_name: str = None):
     # Setup ChromaDB
     client = chromadb.PersistentClient(path=CHROMA_DB_PATH)
 
+    # 🚨 force clean collection
+    try:
+        client.delete_collection(COLLECTION_NAME)
+    except:
+        pass
+    
     collection = client.get_or_create_collection(
         name=COLLECTION_NAME,
         metadata={"hnsw:space": "cosine"}
