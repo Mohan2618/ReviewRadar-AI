@@ -23,8 +23,7 @@ def ingest_reviews(csv_path: str = None, dataset_name: str = None):
     print(f"📁 Dataset name: {dataset_name}")
 
 
-    for chunk in pd.read_csv(path, chunksize=500):
-        process chunk
+    df = pd.read_csv(path)
 
   
     df.columns = [c.strip().lower().replace(" ", "_") for c in df.columns]
@@ -40,15 +39,15 @@ def ingest_reviews(csv_path: str = None, dataset_name: str = None):
     print(f"✅ Loaded {len(df)} valid reviews")
 
    
-    if len(df) > 2000:
-        raise ValueError("CSV too large. Limit to 2000 rows for server stability.")
+    if len(df) > 5000:
+        raise ValueError("CSV too large. Limit to 5000 rows.")
 
     # Generate embeddings
     texts = df["review_text"].tolist()
     print("🔢 Generating embeddings...")
 
     try:
-        embeddings = model.encode(texts, show_progress_bar=False, batch_size=32)
+        embeddings = model.encode(texts, show_progress_bar=False, batch_size=50)
     except Exception as e:
         print("❌ Embedding error:", str(e))
         raise
