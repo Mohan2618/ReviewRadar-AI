@@ -23,7 +23,8 @@ def ingest_reviews(csv_path: str = None, dataset_name: str = None):
     print(f"📁 Dataset name: {dataset_name}")
 
 
-    df = pd.read_csv(path)
+    for chunk in pd.read_csv(path, chunksize=500):
+        process chunk
 
   
     df.columns = [c.strip().lower().replace(" ", "_") for c in df.columns]
