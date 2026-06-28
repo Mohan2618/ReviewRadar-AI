@@ -170,17 +170,18 @@ async def ingest(file: UploadFile = File(...)):
     logger.info(f"Ingestion started for file: {file.filename}")
     if not file.filename.lower().endswith(".csv"):
         raise HTTPException(status_code=400, detail="Only CSV files are allowed")
-    if file.size and file.size > settings.MAX_FILE_SIZE:
-        raise HTTPException(
-            status_code=413,
-            detail=f"File too large. Maximum size: {settings.MAX_FILE_SIZE / 1024 / 1024}MB"
-        )
 
     tmp_path = None
     try:
         with tempfile.NamedTemporaryFile(delete=False, suffix=".csv") as tmp:
             shutil.copyfileobj(file.file, tmp)
             tmp_path = tmp.name
+
+        if os.path.getsize(tmp_path) > settings.MAX_FILE_SIZE:
+            raise HTTPException(
+                status_code=413,
+                detail=f"File too large. Maximum size: {settings.MAX_FILE_SIZE / 1024 / 1024}MB"
+            )
 
         dataset_name = file.filename
         count = ingest_reviews(tmp_path, dataset_name)
