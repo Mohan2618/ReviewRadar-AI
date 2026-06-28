@@ -1,0 +1,51 @@
+review_text,product_name,rating,date,category,reviewer_name,region
+"Amazing product! Camera quality is exceptional and battery lasts all day.",iPhone 15,5,2024-01-15,Electronics,John_Doe,US
+"Terrible experience. Phone overheated within an hour of opening.",iPhone 15,1,2024-01-14,Electronics,Jane_Smith,UK
+"Great value for money. Fast processing and smooth user experience.",iPhone 15,4,2024-01-13,Electronics,Alex_Johnson,US
+"Disappointed with the battery drain. Dies in 3 hours even with light use.",iPhone 15,2,2024-01-12,Electronics,Sarah_Williams,EU
+"Excellent design and build quality. Feels premium.",Pixel 8,5,2024-01-11,Electronics,Mike_Brown,US
+"Screen quality is poor. Lots of dead pixels. Returned it.",Pixel 8,1,2024-01-10,Electronics,Emma_Davis,EU
+"Fast shipping and great customer support. Happy with purchase.",Pixel 8,4,2024-01-09,Electronics,Robert_Miller,US
+"Overpriced for what you get. Better options available.",Pixel 8,2,2024-01-08,Electronics,Lisa_Anderson,UK
+"Love the camera system. Photos are absolutely stunning.",Galaxy S24,5,2024-01-07,Electronics,David_Taylor,US
+"Constant software bugs. Performance is laggy.",Galaxy S24,2,2024-01-06,Electronics,Maria_Garcia,EU
+"Perfect phone for gaming. No lag whatsoever.",Galaxy S24,5,2024-01-05,Electronics,James_Martinez,US
+"Battery life is unacceptable. Needs charging twice a day.",Galaxy S24,1,2024-01-04,Electronics,Patricia_Lee,UK
+"Best purchase of the year. Highly recommended!",iPhone 14,5,2024-01-03,Electronics,Richard_White,US
+"Defective unit. Stopped working after 2 weeks.",iPhone 14,1,2024-01-02,Electronics,Jennifer_Harris,EU
+"Good phone but nothing special compared to competitors.",iPhone 14,3,2024-01-01,Electronics,Charles_Martin,US
+"Amazing value. Great features at this price point.",Pixel 7a,5,2024-12-30,Electronics,Susan_Thompson,UK
+"Poor display quality. Brightness too low.",Pixel 7a,2,2024-12-29,Electronics,George_Garcia,EU
+"Fast and reliable. Does everything I need.",Pixel 7a,4,2024-12-28,Electronics,Nancy_Robinson,US
+"Horrible customer service. They refused to help.",Galaxy A54,1,2024-12-27,Electronics,Thomas_Clark,US
+"Impressed with the specs at this price. Great bargain!",Galaxy A54,5,2024-12-26,Electronics,Karen_Rodriguez,EU
+"Shipping was delayed but product quality is excellent.",OnePlus 12,4,2024-12-25,Electronics,Matthew_Lewis,UK
+"Absolutely terrible! Froze within first day.",OnePlus 12,1,2024-12-24,Electronics,Dorothy_Lee,US
+"Premium build quality. Worth every penny.",OnePlus 12,5,2024-12-23,Electronics,Daniel_Walker,EU
+"Performance is mediocre. Not worth the hype.",Xiaomi 14,2,2024-12-22,Electronics,Betty_Hall,US
+"Outstanding product! Exceeded my expectations.",Xiaomi 14,5,2024-12-21,Electronics,Anthony_Young,UK
+"Cameras are disappointing. Photos look dull.",Xiaomi 14,2,2024-12-20,Electronics,Magaret_Hernandez,US
+"Love it! Fast shipping and great quality.",Motorola Edge 50,5,2024-12-19,Electronics,Donald_King,EU
+"Screen cracked after minor drop. Very fragile.",Motorola Edge 50,1,2024-12-18,Electronics,Steven_Wright,US
+"Good phone for daily use. No complaints.",Motorola Edge 50,4,2024-12-17,Electronics,Barbra_Lopez,UK
+"Excellent speakers and sound quality.",Nothing Phone 2,5,2024-12-16,Electronics,Paul_Hill,US
+"Frequent crashes and freezing issues.",Nothing Phone 2,1,2024-12-15,Electronics,Cynthia_Scott,EU
+"Beautiful design. Unique and stylish.",Nothing Phone 2,4,2024-12-14,Electronics,Mark_Green,US
+"Worst phone I've ever owned. Total waste of money.",OnePlus 11,1,2024-12-13,Electronics,Diane_Adams,UK
+"Performance is outstanding. Best value flagship.",OnePlus 11,5,2024-12-12,Electronics,Kevin_Nelson,US
+"Camera is amazing! Professional quality photos.",OnePlus 11,5,2024-12-11,Electronics,Stephanie_Carter,EU
+"Battery drains too fast. Disappointing.",OnePlus 11,2,2024-12-10,Electronics,Brian_Roberts,US
+"5G connectivity is blazing fast!",iPhone 15 Pro,5,2024-12-09,Electronics,Rebecca_Phillips,UK
+"Display quality is the best I've seen.",iPhone 15 Pro,5,2024-12-08,Electronics,Edward_Campbell,EU
+"Pro features are too complex for casual users.",iPhone 15 Pro,3,2024-12-07,Electronics,Carol_Parker,US
+"Truly professional grade phone. Highly satisfied.",iPhone 15 Pro Max,5,2024-12-06,Electronics,Ronald_Evans,UK
+"Overheating problem persists. Still a dud.",Pixel 8 Pro,2,2024-12-05,Electronics,Janet_Edwards,US
+"Video recording is incredible. 4K quality is pristine.",Pixel 8 Pro,5,2024-12-04,Electronics,Maria_Collins,EU
+"Great phone but very expensive.",Pixel 8 Pro,4,2024-12-03,Electronics,Michael_Stewart,US
+"Exceptional all-rounder. Recommended!",Galaxy S24 Ultra,5,2024-12-02,Electronics,Shirley_Sanchez,UK
+"Stylus is a game changer for productivity.",Galaxy S24 Ultra,5,2024-12-01,Electronics,William_Morris,EU
+"Great specs but lacks innovation.",Galaxy S24 Ultra,3,2024-11-30,Electronics,Brenda_Rogers,US
+"Consistent performance throughout the day.",Motorola Edge 50 Pro,4,2024-11-29,Electronics,Gary_Reed,US
+"Value for money is unbeatable.",Motorola Edge 50 Pro,5,2024-11-28,Electronics,Angela_Cook,UK
+"Some lag during heavy multitasking.",Motorola Edge 50 Pro,3,2024-11-27,Electronics,Roger_Morgan,EU
+"Disappointed with the durability.",Xiaomi 14 Ultra,2,2024-11-26,Electronics,Kathleen_Bell,US
